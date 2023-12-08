@@ -50,8 +50,8 @@ class EasyRadio<T> extends StatefulWidget {
   const EasyRadio({
     super.key,
     required this.value,
-    this.groupValue,
-    this.onChanged,
+    required this.groupValue,
+    required this.onChanged,
     this.dotRadius = kDotRadius,
     this.activeBorderColor,
     this.dotColor,
