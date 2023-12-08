@@ -1,3 +1,7 @@
+## 0.0.3
+
+- update pub points
+
 ## 0.0.2
 
 - add support platforms.
