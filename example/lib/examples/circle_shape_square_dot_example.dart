@@ -1,3 +1,14 @@
+/// A Flutter example demonstrating the usage of the `EasyRadio` package to create
+/// a row of circular radio buttons with square-shaped filled dots.
+///
+/// This example showcases a `CircleShapeSquareDotExample` widget, which is a
+/// stateful widget containing a row of three `EasyRadio` widgets with different
+/// values. The radio buttons have circular shapes with square-shaped filled dots.
+///
+/// Usage:
+/// ```dart
+/// CircleShapeSquareDotExample()
+/// ```
 import 'package:easy_radio/easy_radio.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +24,7 @@ class _CircleShapeSquareDotExampleState
     extends State<CircleShapeSquareDotExample> {
   int? _groupValue = 1;
 
+  /// Callback function for handling changes in the radio button selection.
   void _onChanged(int? value) {
     setState(() {
       _groupValue = value;

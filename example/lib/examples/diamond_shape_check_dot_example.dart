@@ -1,3 +1,14 @@
+/// A Flutter example demonstrating the usage of the `EasyRadio` package to create
+/// a row of diamond-shaped radio buttons with check dots.
+///
+/// This example showcases a `DiamondShapeCheckDotExample` widget, which is a
+/// stateful widget containing a row of three `EasyRadio` widgets with different
+/// values. The radio buttons have diamond shapes with check dots inside them.
+///
+/// Usage:
+/// ```dart
+/// DiamondShapeCheckDotExample()
+/// ```
 import 'package:easy_radio/easy_radio.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +24,7 @@ class _DiamondShapeCheckDotExampleState
     extends State<DiamondShapeCheckDotExample> {
   int? _groupValue = 1;
 
+  /// Callback function for handling changes in the radio button selection.
   void _onChanged(int? value) {
     setState(() {
       _groupValue = value;

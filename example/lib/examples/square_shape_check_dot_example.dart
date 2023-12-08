@@ -1,3 +1,14 @@
+/// A Flutter example demonstrating the usage of the `EasyRadio` package to create
+/// a row of square-shaped radio buttons with check dots.
+///
+/// This example showcases a `SquareShapeCheckDotExample` widget, which is a
+/// stateful widget containing a row of three `EasyRadio` widgets with different
+/// values. The radio buttons have square shapes with check dots inside them.
+///
+/// Usage:
+/// ```dart
+/// SquareShapeCheckDotExample()
+/// ```
 import 'package:easy_radio/easy_radio.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +24,7 @@ class _SquareShapeCheckDotExampleState
     extends State<SquareShapeCheckDotExample> {
   int? _groupValue = 1;
 
+  /// Callback function for handling changes in the radio button selection.
   void _onChanged(int? value) {
     setState(() {
       _groupValue = value;
