@@ -14,7 +14,7 @@
 /// Each subclass also provides additional properties and methods specific to its dot style.
 import 'dart:ui' show StrokeCap;
 
-import 'typed_ahead.dart';
+import 'utils.dart';
 
 // Create a sealed class DotStyle to represent different dot styles
 sealed class DotStyle {
@@ -59,8 +59,8 @@ final class CircleStyle extends DotStyle {
 // Define a final class for SquareFilledStyle that extends DotStyle
 final class SquareFilledStyle extends DotStyle {
   const SquareFilledStyle([double? radius])
-      : _radius =
-            radius ?? 0.0; // Constructor with an optional radius parameter
+      : _radius = radius ??
+            kDotSquareStyleRadius; // Constructor with an optional radius parameter
   final double _radius; // Private field to store the radius
 
   @override
@@ -89,7 +89,7 @@ final class CheckStyle extends DotStyle {
   // Constructor with an optional StrokeCap parameter
   // Initialize the private field with the provided parameter or a default value
   const CheckStyle([StrokeCap? strokeCap])
-      : _strokeCap = strokeCap ?? StrokeCap.round;
+      : _strokeCap = strokeCap ?? kDotCheckStyleStockCap;
   final StrokeCap _strokeCap; // Private field to store the StrokeCap
 
   @override
@@ -116,7 +116,8 @@ final class CheckStyle extends DotStyle {
 // Define a final class for SquareOutlinedStyle that extends DotStyle
 final class SquareOutlinedStyle extends DotStyle {
   // Constructor with an optional radius parameter
-  const SquareOutlinedStyle([double? radius]) : _radius = radius ?? 0.0;
+  const SquareOutlinedStyle([double? radius])
+      : _radius = radius ?? kDotSquareStyleRadius;
   final double _radius; // Private field to store the radius
 
   @override

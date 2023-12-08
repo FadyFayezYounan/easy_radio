@@ -1,7 +1,6 @@
-import 'package:easy_radio/src/utils/radio_shape.dart';
 import 'package:flutter/material.dart';
 
-import 'utils/dot_style.dart';
+import 'utils/utils.dart';
 
 class EasyRadio<T> extends StatefulWidget {
   /// A custom radio button widget that allows users to select a value from a group of options.
@@ -53,12 +52,12 @@ class EasyRadio<T> extends StatefulWidget {
     required this.value,
     this.groupValue,
     this.onChanged,
-    this.dotRadius = 6.0,
+    this.dotRadius = kDotRadius,
     this.activeBorderColor,
     this.dotColor,
     this.inactiveBorderColor,
     this.inactiveFillColor,
-    this.radius = 12.0,
+    this.radius = kRadioRadius,
     this.activeFillColor,
     this.animateFillColor = false,
     this.dotStyle = const DotStyle.circle(),
@@ -146,6 +145,8 @@ class _EasyRadioState<T> extends State<EasyRadio<T>>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Semantics(
       checked: widget._selected,
       inMutuallyExclusiveGroup: true,
@@ -158,20 +159,20 @@ class _EasyRadioState<T> extends State<EasyRadio<T>>
           ..reaction = reaction
           ..reactionFocusFade = reactionFocusFade
           ..reactionHoverFade = reactionHoverFade
+          //TODO: add support for custom colors
           ..inactiveReactionColor = Colors.transparent
           ..reactionColor = Colors.transparent
           ..hoverColor = Colors.transparent
           ..focusColor = Colors.transparent
-          ..splashRadius = kRadialReactionRadius
+          ..splashRadius = widget.radius * 2
           ..downPosition = downPosition
           ..isFocused = states.contains(MaterialState.focused)
           ..isHovered = states.contains(MaterialState.hovered)
-          ..dotColor = widget.dotColor ?? Theme.of(context).colorScheme.primary
+          ..dotColor = widget.dotColor ?? colorScheme.primary
           ..dotRadius = widget.dotRadius
           ..radius = widget.radius
           ..inactiveFillColor = widget.inactiveFillColor
-          ..activeColor =
-              widget.activeBorderColor ?? Theme.of(context).colorScheme.primary
+          ..activeColor = widget.activeBorderColor ?? colorScheme.primary
           ..inactiveColor =
               widget.inactiveBorderColor ?? Colors.grey.withOpacity(0.2)
           ..activeFillColor = widget.activeFillColor
@@ -299,6 +300,9 @@ class _CustomRadioPainter extends ToggleablePainter {
       square: (radius) {
         _drawOuterSquareShapeWithBorderRadius(center, canvas, paint, radius);
       },
+      diamond: () {
+        _drawDiamond(center, canvas, paint);
+      },
     );
 
     /// Draws the unselected radio fill circle on the canvas.
@@ -317,6 +321,9 @@ class _CustomRadioPainter extends ToggleablePainter {
         square: (borderRadius) {
           _drawOuterSquareShapeWithBorderRadius(
               center, canvas, paint, borderRadius);
+        },
+        diamond: () {
+          _drawDiamond(center, canvas, paint);
         },
       );
     }
@@ -345,8 +352,10 @@ class _CustomRadioPainter extends ToggleablePainter {
           _drawOuterSquareShapeWithBorderRadius(
               center, canvas, paint, borderRadius, radius);
         },
+        diamond: () {
+          _drawDiamond(center, canvas, paint);
+        },
       );
-      //canvas.drawCircle(center, radius, paint);
     }
 
     /// Draws the inner dot on the canvas based on the specified position and dot style.
@@ -366,29 +375,30 @@ class _CustomRadioPainter extends ToggleablePainter {
         _dotStyle.when(
           circle: () {
             paint.style = PaintingStyle.fill;
-            _drawCircle(center, canvas, paint);
+            _drawAnimatedCircle(center, canvas, paint);
           },
           squareFilled: (borderRadius) {
             paint.style = PaintingStyle.fill;
-            _drawSquareWithBorderRadius(center, canvas, paint, borderRadius);
+            _drawAnimatedSquareWithBorderRadius(
+                center, canvas, paint, borderRadius);
           },
           check: (strokeCap) {
             paint.style = PaintingStyle.stroke;
             paint.strokeWidth = 2.0;
             paint.strokeCap = strokeCap;
-            _drawCheck(center, canvas, paint);
+            _drawAnimatedCheck(center, canvas, paint);
           },
           squareOutlined: (borderRadius) {
             paint.style = PaintingStyle.stroke;
-            _drawSquare(center, canvas, paint, borderRadius);
+            _drawAnimatedSquare(center, canvas, paint, borderRadius);
           },
           diamondFilled: () {
             paint.style = PaintingStyle.fill;
-            _drawDiamond(center, canvas, paint, _dotRadius);
+            _drawAnimatedDiamond(center, canvas, paint, _dotRadius);
           },
           diamondOutlined: () {
             paint.style = PaintingStyle.stroke;
-            _drawDiamond(center, canvas, paint, _dotRadius);
+            _drawAnimatedDiamond(center, canvas, paint, _dotRadius);
           },
         );
       }
@@ -405,7 +415,8 @@ class _CustomRadioPainter extends ToggleablePainter {
   /// The [close] method is called to close the path and complete the diamond shape.
   ///
   /// Finally, the diamond shape is drawn on the canvas using the [drawPath] method of the [Canvas] object.
-  void _drawDiamond(Offset center, Canvas canvas, Paint paint, double size) {
+  void _drawAnimatedDiamond(
+      Offset center, Canvas canvas, Paint paint, double size) {
     final Path diamondPath = Path();
     diamondPath.moveTo(center.dx, center.dy - size * position.value);
     diamondPath.lineTo(center.dx + size * position.value, center.dy);
@@ -424,7 +435,7 @@ class _CustomRadioPainter extends ToggleablePainter {
   /// - canvas: The canvas on which to draw the square.
   /// - paint: The paint used to fill the square.
   /// - borderRadius: The radius of the square's corners.
-  void _drawSquare(
+  void _drawAnimatedSquare(
       Offset center, Canvas canvas, Paint paint, double borderRadius) {
     final double radius = _dotRadius * position.value;
     final Rect squareRect = Rect.fromCenter(
@@ -447,7 +458,7 @@ class _CustomRadioPainter extends ToggleablePainter {
   /// The [canvas] parameter is the canvas on which the square will be drawn.
   /// The [paint] parameter is the paint object used to define the appearance of the square.
   /// The [borderRadius] parameter specifies the radius of the rounded corners of the square.
-  void _drawSquareWithBorderRadius(
+  void _drawAnimatedSquareWithBorderRadius(
       Offset center, Canvas canvas, Paint paint, double borderRadius) {
     final double radius = _dotRadius * position.value;
     final Rect squareRect = Rect.fromCenter(
@@ -468,7 +479,7 @@ class _CustomRadioPainter extends ToggleablePainter {
   /// - center: The center point of the circle.
   /// - canvas: The canvas on which to draw the circle.
   /// - paint: The paint to use for drawing the circle.
-  void _drawCircle(Offset center, Canvas canvas, Paint paint) {
+  void _drawAnimatedCircle(Offset center, Canvas canvas, Paint paint) {
     canvas.drawCircle(center, _dotRadius * position.value, paint);
   }
 
@@ -482,7 +493,7 @@ class _CustomRadioPainter extends ToggleablePainter {
   /// at a position 45% from the top, and ends at a position 75% from the top.
   /// The third line starts at the left side of the bounding rectangle of the check mark,
   /// at a position 75% from the top, and ends at a position 30% from the top.
-  void _drawCheck(Offset center, Canvas canvas, Paint paint) {
+  void _drawAnimatedCheck(Offset center, Canvas canvas, Paint paint) {
     final double radius = _dotRadius * position.value;
     final Rect checkRect = Rect.fromCircle(
       center: center,
@@ -529,5 +540,24 @@ class _CustomRadioPainter extends ToggleablePainter {
     final RRect roundedRect =
         RRect.fromRectAndRadius(squareRect, Radius.circular(borderRadius));
     canvas.drawRRect(roundedRect, paint);
+  }
+
+  /// Draws a diamond shape on the canvas at the specified center position.
+  ///
+  /// The diamond is drawn using the provided [paint] object and has a size
+  /// determined by the dot radius.
+  ///
+  /// The [center] parameter specifies the center position of the diamond on the canvas.
+  /// The [canvas] parameter is the canvas on which the diamond will be drawn.
+  /// The [paint] parameter is the paint object used to define the appearance of the diamond.
+  void _drawDiamond(Offset center, Canvas canvas, Paint paint) {
+    final double radius = _radius;
+    final Path diamondPath = Path()
+      ..moveTo(center.dx, center.dy - radius)
+      ..lineTo(center.dx + radius, center.dy)
+      ..lineTo(center.dx, center.dy + radius)
+      ..lineTo(center.dx - radius, center.dy)
+      ..close();
+    canvas.drawPath(diamondPath, paint);
   }
 }
