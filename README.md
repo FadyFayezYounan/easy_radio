@@ -1,5 +1,10 @@
 # EasyRadio
 
+<a href="https://pub.dev/packages/easy_radio"><img src="https://img.shields.io/pub/v/easy_radio.svg" alt="Pub"></a>
+<a href="https://pub.dev/packages/easy_radio/score"><img src="https://img.shields.io/pub/likes/easy_radio?logo=flutter" alt="Pub likes"></a>
+<a href="https://pub.dev/packages/easy_radio/score"><img src="https://img.shields.io/pub/popularity/easy_radio?logo=flutter" alt="Pub popularity"></a>
+<a href="https://pub.dev/packages/easy_radio/score"><img src="https://img.shields.io/pub/points/easy_radio?logo=flutter" alt="Pub points"></a>
+
 EasyRadio is a customizable radio button widget for Flutter that offers consistent animation, easy customization of sizes, shape, inner dot shape, and colors. It ensures a seamless user experience by utilizing the same animation as the regular radio button.
 
 | Rounded Radio                                                                                                                      | Square Radio                                                                                                                      | Diamond Radio                                                                                                                      |

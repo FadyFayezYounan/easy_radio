@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: const Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 24.0),
