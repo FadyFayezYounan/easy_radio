@@ -1,6 +1,6 @@
 name: easy_radio
 description: "EasyRadio is a customizable radio button widget for Flutter that offers consistent animation, easy customization of sizes, shape, inner dot shape, and colors. It ensures a seamless user experience by utilizing the same animation as the regular radio button."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/FadyFayezYounan/easy_radio.git
 
 topics:
